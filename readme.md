@@ -4,19 +4,19 @@ Qwiz is a dynamic web application designed for creating, managing, and answering
 
 ## Features
 
-* **Create Quizzes:** Easily create quizzes with multiple questions and answers.
-* **Answer Quizzes:** Users can answer quizzes one question at a time in a multistep format.
-* **Edit Quizzes:** Modify quiz details such as title, description, and deadline.
-* **View Results:** See quiz responses and track average scores.
-* **User Profiles:** View and update user profiles with email and username.
-* **Authentication:** Secure login and signup functionality.
+- **Create Quizzes:** Easily create quizzes with multiple questions and answers.
+- **Answer Quizzes:** Users can answer quizzes one question at a time in a multistep format.
+- **Edit Quizzes:** Modify quiz details such as title, description, and deadline.
+- **View Results:** See quiz responses and track average scores.
+- **User Profiles:** View and update user profiles with email and username.
+- **Authentication:** Secure login and signup functionality.
 
 ## Technologies Used
 
-* **Frontend:** React, TypeScript, Tailwind CSS, Material React Table, VITE
-* **Backend:** Node.js, Express.js, Prisma, PostgreSQL
-* **API:** Axios, TanStack Query
-* **Authentication:** JWT (JSON Web Token)
+- **Frontend:** React, TypeScript, Tailwind CSS, Material React Table, VITE
+- **Backend:** Node.js, Express.js, Prisma, PostgreSQL
+- **API:** Axios, TanStack Query
+- **Authentication:** JWT (JSON Web Token)
 
 ## Running Locally
 
@@ -43,4 +43,4 @@ npm run dev
 
 6: Open your browser and navigate to <http://localhost:5173>.
 
-7: Make sure the API backend is running as well. The backend is hosted on this **[REPOSITORY](https://github.com/regan-mu/qwiz-client)**
+7: Make sure the API backend is running as well. The backend is hosted on this **[REPOSITORY](https://github.com/regan-mu/qwiz-backend)**
