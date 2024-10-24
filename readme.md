@@ -43,4 +43,4 @@ npm run dev
 
 6: Open your browser and navigate to <http://localhost:5173>.
 
-7: Make sure the API backend is running as well.
+7: Make sure the API backend is running as well. The backend is hosted on this **[REPOSITORY](https://github.com/regan-mu/qwiz-client)**
