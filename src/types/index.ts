@@ -31,12 +31,14 @@ export interface User {
   email: string;
   username: string;
   quizzes: Quiz[];
+  responses: QuizResponse[];
 }
 
 export interface QuizResponse {
   user: User;
   date: string;
   score: number;
+  quiz: QuizEdit
 }
 
 export interface QuizProfile {
@@ -82,7 +84,7 @@ export interface RespondentAnswers {
   id: number;
 }
 
-export interface UserProfileFormValues  {
+export interface UserProfileFormValues {
   email: string;
   username: string;
-};
+}
