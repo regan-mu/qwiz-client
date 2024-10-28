@@ -11,7 +11,13 @@ const QuestionComponent: React.FC<QuestionComponentProps> = ({
 }) => {
   return (
     <div className="p-4">
-      <h2 className="text-lg font-manrope font-medium mb-4">{question.question_text}</h2>
+      <h2 className="text-lg font-manrope font-medium mb-4">
+        <span
+          dangerouslySetInnerHTML={{
+            __html: question.question_text.trim(),
+          }}
+        />
+      </h2>
       <form>
         {question.answers.map((answer) => (
           <div key={answer.id} className="mb-2">

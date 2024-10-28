@@ -1,5 +1,4 @@
-import { useState, useEffect } from "react";
-import { useForm } from "react-hook-form";
+import React, { useState, useEffect, FormEvent } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { Link, useParams, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
@@ -10,14 +9,16 @@ import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { updateQuestion, deleteQuestion } from "../APIRequests/requests";
 import { Question } from "../types";
 import DeleteConfirmationModal from "../components/cards/confirmationDeleteModal";
+import QuestionField from "../components/cards/questionRichInput";
 
 const QuestionProfile = () => {
   const axiosPrivate = useAxiosPrivate();
   const { id } = useParams();
   const [deleteModalOpen, setDeleteModal] = useState<boolean>(false);
+  const [question, setQuestion] = useState<string>("");
   const navigate = useNavigate();
 
-  const { mutateAsync: editQuestion } = useMutation({
+  const { mutateAsync: editQuestion, isPending } = useMutation({
     mutationKey: ["updateQuestion"],
     mutationFn: async (questionData: Question) =>
       await updateQuestion(questionData, axiosPrivate, id!),
@@ -34,27 +35,24 @@ const QuestionProfile = () => {
     queryFn: async () => await retrieveQuestion(axiosPrivate, id!),
   });
 
-  //   Handle form
-  const { register, handleSubmit, setValue } = useForm({
-    defaultValues: {
-      question_text: "",
-      answers: [],
-    },
-  });
+  const handleQuestionChange = (value: string) => {
+    setQuestion(value);
+  };
 
   //   Update the default values after data has been fetched
   const [answers, setAnswers] = useState(data?.answers || []);
   useEffect(() => {
     if (data) {
-      setValue("question_text", data?.question_text);
       setAnswers(data?.answers);
+      setQuestion(data?.question_text);
     }
-  }, [data, setValue]);
+  }, [data]);
 
   // Update question text and correct answer
-  const onSubmit = async (formData: any) => {
+  const onSubmit = async (e: FormEvent) => {
+    e.preventDefault();
     const updatedQuestion: Question = {
-      question_text: formData.question_text,
+      question_text: question,
       answers: answers,
     };
     await editQuestion(updatedQuestion);
@@ -102,22 +100,15 @@ const QuestionProfile = () => {
           <BsFillTrash3Fill size={22} className="text-brand" />
         </button>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form onSubmit={onSubmit}>
         <h1 className="text-xl font-semibold mb-4 font-manrope">
           Question Profile
         </h1>
         <div className="mb-4">
-          <label
-            className="block text-gray-700 font-semibold mb-2 font-manrope"
-            htmlFor="question_text"
-          >
-            Question:
-          </label>
-          <input
-            {...register("question_text")}
-            type="text"
-            className="w-full px-3 py-2 border rounded-lg outline-none focus:ring-1 focus:ring-brand"
-            placeholder="Enter question text"
+          <QuestionField
+            placeholder=""
+            question={question}
+            handleQuestionText={handleQuestionChange}
           />
         </div>
 
@@ -127,8 +118,9 @@ const QuestionProfile = () => {
         {/* Submit Button */}
         <div className="mt-4">
           <button
+            disabled={isPending}
             type="submit"
-            className="bg-brand text-white px-4 py-2 rounded-lg"
+            className="w-max px-4 py-2 bg-brand text-white rounded disabled:opacity-60 disabled:cursor-not-allowed hover:bg-opacity-80 transition"
           >
             Update Question
           </button>

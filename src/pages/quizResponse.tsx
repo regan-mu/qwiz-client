@@ -46,7 +46,7 @@ const QuizAnsweringPage: React.FC = () => {
   };
 
   // Handle mutation
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["submitResponses"],
     mutationFn: async (answers: RespondentAnswers[]) =>
       await quizResponses(axiosPrivate, id!, answers),
@@ -122,6 +122,7 @@ const QuizAnsweringPage: React.FC = () => {
             Click the button below to submit your answers.
           </p>
           <button
+          disabled={isPending}
             className="w-max bg-brand text-white py-2 px-5 rounded-md duration-75 delay-75 hover:opacity-80 disabled:opacity-60 disabled:cursor-not-allowed"
             onClick={handleSubmitQuiz}
           >

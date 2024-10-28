@@ -111,10 +111,16 @@ const QuizProfile: React.FC = () => {
       {data?.questions && data?.questions?.length > 0 && (
         <div className="mt-5 border-y-[0.05px] py-5 border-gray-200">
           <h3 className="text-xl mb-2">Questions for this Quiz</h3>
-          <ul className="font-light list-inside list-decimal">
+          <ul className="font-light pl-5 list-decimal">
             {data?.questions.map((qn) => (
-              <li className="hover:text-brand transition w-max" key={v4()}>
-                <Link to={`/question/${qn.id}`}>{qn.question_text}</Link>
+              <li className="hover:text-brand transition w-max mb-2" key={v4()}>
+                <Link to={`/question/${qn.id}`}>
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: qn.question_text.trim(),
+                    }}
+                  />
+                </Link>
               </li>
             ))}
           </ul>

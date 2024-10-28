@@ -7,6 +7,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import { Question, Choice } from "../types";
 import useAxiosPrivate from "../hooks/useAxiosPrivate";
 import { addQuizAnswers, fetchQuizQuestions } from "../APIRequests/requests";
+import QuestionField from "../components/cards/questionRichInput";
 
 const QuizQuestionCreator: React.FC = () => {
   const [questionText, setQuestionText] = useState("");
@@ -21,8 +22,12 @@ const QuizQuestionCreator: React.FC = () => {
     queryFn: async () => await fetchQuizQuestions(axiosPrivate, id!),
   });
 
+  const handleSetQuestionText = (value: string) => {
+    setQuestionText(value);
+  };
+
   // Add questions
-  const { mutateAsync } = useMutation({
+  const { mutateAsync, isPending } = useMutation({
     mutationKey: ["create_questions"],
     mutationFn: async (data: Question) =>
       await addQuizAnswers(data, axiosPrivate, id!),
@@ -62,7 +67,7 @@ const QuizQuestionCreator: React.FC = () => {
       answers: choices,
       quizId: Number(id),
     };
-    // Check if there ais a correct answer marked. If not raise an error.
+    // Check if there is a correct answer marked. If not raise an error.
     const correctAnswer = choices.filter((choice) => choice.isCorrect);
     if (!questionText) {
       toast.error("Question Not added");
@@ -83,8 +88,8 @@ const QuizQuestionCreator: React.FC = () => {
   };
 
   return (
-    <div className="flex gap-10">
-      <div className="max-w-xl w-full p-6 bg-white rounded shadow-md">
+    <div className="flex gap-5">
+      <div className="max-w-xl w-full p-6 bg-white rounded shadow-md h-max">
         <h2 className="text-2xl mb-4">Create Quiz Question</h2>
 
         {/* Question Input */}
@@ -92,12 +97,10 @@ const QuizQuestionCreator: React.FC = () => {
           <label className="block text-gray-700 font-medium mb-2">
             Question
           </label>
-          <input
-            type="text"
-            value={questionText}
-            onChange={(e) => setQuestionText(e.target.value)}
-            placeholder="Enter the question"
-            className="w-full px-4 py-2 border rounded focus:outline-none focus:ring-1 focus:ring-brand"
+          <QuestionField
+            placeholder="Type question here..."
+            question={questionText}
+            handleQuestionText={handleSetQuestionText}
           />
         </div>
 
@@ -154,6 +157,7 @@ const QuizQuestionCreator: React.FC = () => {
 
         {/* Submit Button */}
         <button
+          disabled={isPending}
           onClick={handleSubmit}
           className="w-full px-4 py-2 bg-brand text-white rounded disabled:opacity-60 disabled:cursor-not-allowed hover:bg-opacity-80 transition"
         >
@@ -164,10 +168,16 @@ const QuizQuestionCreator: React.FC = () => {
         <h2 className="text-brand text-xl mb-10">{data?.quiz}</h2>
         <h2 className="font-medium mb-3">Questions for this Quiz</h2>
         {data?.questions && data?.questions?.length > 0 ? (
-          <ol className="font-light list-decimal list-inside">
+          <ol className="font-light list-decimal pl-5">
             {data?.questions?.map((qn) => (
-              <li className="hover:text-brand transition" key={v4()}>
-                <Link to={`/question/${qn.id}`}>{qn.question_text}</Link>
+              <li className="hover:text-brand transition mb-2" key={v4()}>
+                <Link to={`/question/${qn.id}`}>
+                  <span
+                    dangerouslySetInnerHTML={{
+                      __html: qn.question_text.trim(),
+                    }}
+                  />
+                </Link>
               </li>
             ))}
           </ol>
