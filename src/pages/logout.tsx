@@ -13,7 +13,11 @@ const Logout = () => {
     };
     logoutUser();
   }, []);
-  return;
+  return (
+    <div className="w-screen h-screen flex items-center justify-center ">
+      Logging you out...
+    </div>
+  );
 };
 
 export default Logout;
